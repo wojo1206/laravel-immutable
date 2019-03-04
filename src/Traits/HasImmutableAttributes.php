@@ -19,6 +19,20 @@ trait HasImmutableAttributes
     }
 
     /**
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return mixed
+     */
+    public function setAttribute($key, $value)
+    {
+        $return = parent::setAttribute($key, $value);
+
+        self::resetImmutableAttributes($this);
+
+        return $return;
+    }
+
+    /**
      * @param \Illuminate\Database\Eloquent\Model $model
      */
     private static function resetImmutableAttributes(Model $model): void

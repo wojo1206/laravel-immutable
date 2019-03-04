@@ -38,6 +38,30 @@ class YourModel extends Model
 
 In this example, `name` and `sku` can be set on model creation, however, the attributes will not persist changes of their value to a database on update.
 
+```php
+$model = new YourModel;
+ 
+// set the attribute 
+$model->name = 'test';
+$model->name; // 'test'
+ 
+// change it (pre-saving)
+$model->name = 'changed';
+$model->name; // 'changed'
+ 
+// now we save the model
+$model->save();
+ 
+// can't change its value now
+$model->name = 'nope';
+$model->name; // 'changed'
+ 
+// can't update it either
+$model->save([
+    'name' => 'nope',
+]);
+$model->name; // 'changed'
+```
 ## Copyright and License
 
 [MIT License](LICENSE.md).
