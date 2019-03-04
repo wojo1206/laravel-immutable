@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 trait HasImmutableAttributes
 {
     /**
+     * @var array
+     */
+    protected $immutable = [];
+
+    /**
      * The "booting" method
      */
     public static function bootImmutableAttributes()
@@ -27,7 +32,9 @@ trait HasImmutableAttributes
     {
         $return = parent::setAttribute($key, $value);
 
-        self::resetImmutableAttributes($this);
+        if ($this->exists) {
+            self::resetImmutableAttributes($this);
+        }
 
         return $return;
     }
@@ -55,6 +62,6 @@ trait HasImmutableAttributes
      */
     private static function getImmutableAttributes(): array
     {
-        return static::$immutable ?: [];
+        return static::$immutable ?? [];
     }
 }
