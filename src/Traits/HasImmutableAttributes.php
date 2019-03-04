@@ -30,13 +30,11 @@ trait HasImmutableAttributes
      */
     public function setAttribute($key, $value)
     {
-        $return = parent::setAttribute($key, $value);
-
-        if ($this->exists) {
-            self::resetImmutableAttributes($this);
+        if ($this->exists && self::hasImmutableAttribute($key)) {
+            return $this;
         }
 
-        return $return;
+        return parent::setAttribute($key, $value);
     }
 
     /**
@@ -63,5 +61,15 @@ trait HasImmutableAttributes
     private static function getImmutableAttributes(): array
     {
         return static::$immutable ?? [];
+    }
+
+    /**
+     * @param $key
+     *
+     * @return bool
+     */
+    private static function hasImmutableAttribute($key): bool
+    {
+        return array_search($key, self::getImmutableAttributes()) !== false;
     }
 }
